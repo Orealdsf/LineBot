@@ -152,18 +152,83 @@ def handle_message(event):
    # )
    # line_bot_api.reply_message(event.reply_token, message)
     
+
     else:
         message = TextSendMessage(text=event.message.text)
         line_bot_api.reply_message(event.reply_token, message)
 
-    
-
-
-    
-
+  
+  
     
 
 import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
+
+
+#爬蟲（尚未確認功能，需測試回傳）
+#引入函式庫
+import requests 
+import json
+import datetime
+import re
+
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+
+#dcard
+url = 'https://www.dcard.tw/f'
+resp = requests.get(url)
+#HTTP 要求是否已經被完成
+print(resp.status_code)
+# 以 Beautiful Soup 解析 HTML 程式碼
+soup = BeautifulSoup(resp.text, 'html.parser')
+# print(soup.prettify())
+dcard_title = soup.find_all('h3', re.compile('PostEntry_title_'))
+print('Dcard 熱門前十文章標題：')
+for index, item in enumerate(dcard_title[:10]):
+    print("{0:2d}. {1}".format(index + 1, item.text.strip()))
+
+
+# 下載 Yahoo 首頁內容
+r = requests.get('https://tw.yahoo.com/')
+
+# 確認是否下載成功
+if r.status_code == requests.codes.ok:
+  soup = BeautifulSoup(r.text, 'html.parser')
+
+  # 以 CSS 的 class 抓出各類頭條新聞
+  stories = soup.find_all('a', class_='story-title')
+  for s in stories:
+    # 新聞標題
+    print("標題：" + s.text)
+    # 新聞網址
+    print("網址：" + s.get('href'))
+
+
+# Google 搜尋 URL
+google_url = 'https://www.google.com.tw/search'
+
+# 查詢參數
+my_params = {'q': 'example'}
+
+# 下載 Google 搜尋結果
+r = requests.get(google_url, params = my_params)
+
+if r.status_code == requests.codes.ok:
+  soup = BeautifulSoup(r.text, 'html.parser')
+
+  # 觀察 HTML 原始碼
+  # print(soup.prettify())
+
+  # 以 CSS 的選擇器來抓取 Google 的搜尋結果
+  items = soup.select('div.g > h3.r > a[href^="/url"]')
+  for i in items:
+    # 標題
+    print("標題：" + i.text)
+    # 網址
+    print("網址：" + i.get('href'))    
