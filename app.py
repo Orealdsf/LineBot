@@ -232,3 +232,24 @@ if r.status_code == requests.codes.ok:
     print("標題：" + i.text)
     # 網址
     print("網址：" + i.get('href'))    
+
+#氣象
+import pandas as pd
+import numpy as np
+from bs4 import BeautifulSoup
+import datetime
+import os
+import pyodbc
+
+# 抓現在時間
+today = str(datetime.date.today())
+cwb_data = "cwb_weather_data"
+if not os.path.exists(cwb_data):
+    os.mkdir(cwb_data)
+
+#連接現有氣象 api
+import urllib.request
+import zipfile 
+res ="http://opendata.cwb.gov.tw/opendataapi?dataid=F-D0047-093&authorizationkey=CWB-3FB0188A-5506-41BE-B42A-3785B42C3823"
+urllib.request.urlretrieve(res,"F-D0047-093.zip")
+f=zipfile.ZipFile('F-D0047-093.zip')
