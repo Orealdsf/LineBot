@@ -76,9 +76,12 @@ def handle_follow(event):
 
 
 #def Dcard():
-#    url = 'https://www.dcard.tw/f'
-#    resp = requests.get(url)
+#    target_url = 'https://www.dcard.tw/f'
+#    rs = requests.get(url)
 #    #HTTP 要求是否已經被完成
+    rs = requests.session()
+    res = rs.get(target_url, verify=False)
+    res.encoding = 'utf-8'
 #    print(resp.status_code)
 #    # 以 Beautiful Soup 解析 HTML 程式碼
 #    soup = BeautifulSoup(resp.text, 'html.parser')
@@ -103,6 +106,22 @@ def movie():
         content += '{}\n{}\n'.format(title, link)
     return content
 
+def apple_news():
+    targe_url='https://tw.appledaily.com/new/realtime'
+    rs = requests.session()
+    res = rs.get(target_url, verify=False)
+    res.encoding = 'utf-8'
+    soup = BeautifulSoup(res.text, 'html.parser')   
+    content = ""
+    for index, data in enumerate(soup.select('div.item a')):
+        if index == 10:
+            return content
+        print(data)       
+        title = data.find('img')['alt']
+        link =  data['href']
+        link2='https:'+data.find('img')['data_src']
+        content += '{}\n{}\n{}\n'.format(title, link, link2)
+    return content
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
@@ -112,9 +131,14 @@ def handle_message(event):
 
     # 回應訊息
 
-    if event.message.text == "最新電影":
+    if event.message.text == "電影":
         a=movie()
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=a))
+
+    elif event.message.text== "新聞":
+        b=apple_news()
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=b))
+
     elif event.message.text == '==':
         message = TextSendMessage(text='終於有人知道= =中間不要加空格')
         line_bot_api.reply_message(event.reply_token,message)
