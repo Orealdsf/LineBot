@@ -12,8 +12,9 @@ from linebot.exceptions import (
 from linebot.models import *
 
 
-
-#from urllib.request import urlretrieve
+import requests 
+from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
 
 app = Flask(__name__)
 
@@ -41,18 +42,21 @@ def callback():
     return 'OK'
 
 
-#def Dcard():
-#    url = 'https://www.dcard.tw/f'
-#    resp = requests.get(url)
-#    #HTTP 
-#    print(resp.status_code)
-#    #  Beautiful Soup 
-#    soup = BeautifulSoup(resp.text, 'html.parser')
-#    # print(soup.prettify())
-#    dcard_title = soup.find_all('h3', re.compile('PostEntry_title_'))
+def Dcard():
+    url = 'https://www.dcard.tw/f'
+    resp = requests.get(url)
+    #HTTP 
+    print(resp.status_code)
+    #  Beautiful Soup 
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    # print(soup.prettify())
+    dcard_title = soup.find_all('h3', re.compile('PostEntry_title_'))
 
-#    for index, item in enumerate(dcard_title[:10]):
-#        print("{0:2d}. {1}".format(index + 1, item.text.strip()))
+    for index, item in enumerate(dcard_title[:10]):
+        content += '{0:2d}. {1}\n'.format(index + 1, item.text.strip())
+        #print("{0:2d}. {1}".format(index + 1, item.text.strip()))
+    return content
+
 
 def movie():
     target_url = 'https://movies.yahoo.com.tw/'
@@ -193,7 +197,9 @@ def handle_message(event):
         message = TextSendMessage(text='True')
         line_bot_api.reply_message(event.reply_token, message)
 
-
+    if event.message.text == "Dcard":
+        a=Dcard()
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=a))
     
     if event.message.text == '==':
         message = TextSendMessage(text='fuck')
