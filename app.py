@@ -1,4 +1,4 @@
-#引用套件
+#import package
 from flask import Flask, request, abort
 
 
@@ -90,13 +90,32 @@ def chat(event_message):
     #,'怪獸與葛林戴華德的罪行 fantastic beasts the crimes of grindelwald  https://zh.wikipedia.org/wiki/怪獸與葛林戴華德的罪行'
     #,'寡婦 widows  https://zh.wikipedia.org/wiki/寡婦_(電影)']
    
-    
     #count = 0    
 
     #text = text = random.choice(Respond_Msg)
     #msg_movie = TextSendMessage(text)
     #return msg_movie
-       
+
+#def music():
+      
+    #Respond_Msg = [
+    #'トリセツ / 西野カナ (cover)  https://www.youtube.com/watch?v=Bo-KLAh5JO8'
+    #,'小さな恋のうた / MONGOL800 (Cover)  https://www.youtube.com/watch?v=vJO4Fg_iEss'
+    #,'なんでもないや / RADWIMPS (cover)  https://www.youtube.com/watch?v=VTGp2ZGOs6I'
+    #,'YES or YES / TWICE  https://www.youtube.com/watch?v=mAKsZ26SabQ'
+    #,'iKON / LOVE SCENARIO  https://www.youtube.com/watch?v=vecSVX1QYbQ'
+    #,'Justin Bieber / Beauty And A Beat  https://www.youtube.com/watch?v=n-BXNXvTvV4'
+    #,'Loco & PUNCH / Say Yes  https://www.youtube.com/watch?v=4e0XTzGM7nY'
+    #,'周杰倫 / 告白氣球  https://www.youtube.com/watch?v=bu7nU9Mhpyo'
+    #,'梁靜茹 / 暖暖  https://www.youtube.com/watch?v=G1xvl0t-hf0'
+    #,'蘇打綠 / 小情歌  https://www.youtube.com/watch?v=in8NNzwFa-s']
+    
+    #count = 0    
+
+    #text = text = random.choice(Respond_Msg)
+    #msg_movie = TextSendMessage(text)
+    #return msg_music
+
     
 #for Msg in User_Msg :
  #       if event_message != Msg:
@@ -115,7 +134,19 @@ def chat(event_message):
     #text = random.choice ( ['嗨', '你好', '最近好嗎?', '你好嗎?', '很高興見到你','你再問我嗎?','最近失眠了 你呢?'] )
     #msg = TextSendMessage(text)
     
-        
+#def meal():
+      
+    #Respond_Msg = [
+    #'炒飯','別吃了啦','水餃煎餃','肉粽碗粿','炒米粉炒麵','蚵仔煎','蛋糕麵包','石鍋拌飯'
+    #,'排骨/雞腿飯','滷肉飯','冰淇淋','鐵板燒','麥當當','香雞排','披薩','滷味'
+    #,'牛肉麵','飯捲','壽司生魚片','關東煮','廣東粥','肉圓','涼麵','米糕'
+    #,'火鍋','燒烤']
+   
+    #count = 0    
+
+    #text = text = random.choice(Respond_Msg)
+    #msg_movie = TextSendMessage(text)
+    #return msg_dinner       
     
 
 
@@ -328,18 +359,31 @@ def handle_message(event):
     #if event.message.text == "電影": 
     #    message=movie()
     #   line_bot_api.reply_message(event.reply_token, message)
+
+    #if event.message.text == "音樂": 
+    #    message=music()
+    #   line_bot_api.reply_message(event.reply_token, message)
+
+    #if event.message.text == "等下吃什麼": 
+    #    message=meal()
+    #   line_bot_api.reply_message(event.reply_token, message)
+
     if event.message.text == "CS": 
         message=CS()
         line_bot_api.reply_message(event.reply_token, message)
+
     if event.message.text == "系所簡介": 
         message = CSIntroduction()
         line_bot_api.reply_message(event.reply_token, message)
+
     if event.message.text == "教學師資": 
         message = teacher()
         line_bot_api.reply_message(event.reply_token, message)
+
     if event.message.text == "助理教授": 
         message = teacher2()
-        line_bot_api.reply_message(event.reply_token, message)   
+        line_bot_api.reply_message(event.reply_token, message)  
+
     if event.message.text == "實驗室": 
         message = TemplateSendMessage(
         alt_text='Buttons template',
@@ -369,6 +413,7 @@ def handle_message(event):
     if event.message.text == "系所介紹": 
         message = TextSendMessage(text='在政府持續推動數位化台灣，以及資訊相關產業的蓬勃發展之下，在可預見的未來，資訊人才仍是就業市場的最大需求之一。屏東師院為發展成為綜合型大學，並考慮就業市場的需求，特成立本系，以培育資訊科技研發與應用人才。')
         line_bot_api.reply_message(event.reply_token, message)
+
     if event.message.text == "發展特色": 
         message = TextSendMessage(text='本系致力於智慧雲端系統與應用開發之研發工作。')       
         line_bot_api.reply_message(event.reply_token, message)        
@@ -378,17 +423,31 @@ def handle_message(event):
         message = TextSendMessage(text='https://www.etax.nat.gov.tw/etw-main/web/ETW183W1/')
         line_bot_api.reply_message(event.reply_token, message)
 
+    if event.message.text == "新聞": 
+        message = TextSendMessage(text='https://tw.news.appledaily.com/us/realtime/')
+        line_bot_api.reply_message(event.reply_token, message)
+
     if event.message.text == "天氣": 
         message = TextSendMessage(text='https://www.cwb.gov.tw/V7/forecast/')
         line_bot_api.reply_message(event.reply_token, message)
+
     if event.message.text == "幣值": 
         message = TextSendMessage(text='https://zt.coinmill.com/')
+        line_bot_api.reply_message(event.reply_token, message)
+
+    if event.message.text == "Dcard": 
+        message = TextSendMessage(text='https://www.dcard.tw/f')
+        line_bot_api.reply_message(event.reply_token, message)
+
+    if event.message.text == "地震": 
+        message = TextSendMessage(text='https://www.cwb.gov.tw/V7/earthquake/')
         line_bot_api.reply_message(event.reply_token, message)
     
     
     if event.message.text == '你愛我嗎?':
         message = TextSendMessage(text='我對你的感情，是人類和bot之間獨有的信任和友誼 你可以把它叫做愛。')
         line_bot_api.reply_message(event.reply_token,message)
+
     elif event.message.text =='location':
        message = LocationSendMessage(
            title='my location',
