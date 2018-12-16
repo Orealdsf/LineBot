@@ -13,8 +13,11 @@ from linebot.models import *
 
 
 import requests 
-from bs4 import BeautifulSoup
-from urllib.request import urlretrieve
+#import urllib3
+#from bs4 import BeautifulSoup
+#from urllib.request import urlretrieve
+import random
+
 
 app = Flask(__name__)
 
@@ -42,36 +45,60 @@ def callback():
     return 'OK'
 
 
-def Dcard():
-    url = 'https://www.dcard.tw/f'
-    resp = requests.get(url)
-    #HTTP 
-    print(resp.status_code)
-    #  Beautiful Soup 
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    # print(soup.prettify())
-    dcard_title = soup.find_all('h3', re.compile('PostEntry_title_'))
 
-    for index, item in enumerate(dcard_title[:10]):
-        content += '{0:2d}. {1}\n'.format(index + 1, item.text.strip())
-        #print("{0:2d}. {1}".format(index + 1, item.text.strip()))
-    return content
+def chat(event_message):   
+    User_Msg = ['嗨','你好','歡迎!','你好','嗨，最近如何?','你好嗎?','很高興見到你','你還好嗎?','怎麼了?','早上好，你好嗎?','我挺好的，你呢','我也還不錯','那很好','是啊','你好','你好','你好嗎?','我還不錯','那很好','是啊','有需要幫忙嗎?']    
+    Respond_Msg = ['你好','你好,很高興為你服務','吃飯了嗎?','嗨，最近如何?','最近失眠了 你呢?','還不錯，你呢?','很高興見到你','我很好，你呢?','早ㄤ!','早上好，你好嗎?','我挺好的，你呢','我也還不錯','那很好','是啊','你好','你好','你好嗎?','我還不錯','那很好','是啊','有需要幫忙嗎?']
+    Greet_User_Msg = ['你好','嗨','歡迎!','你好','嗨，最近如何?','你好嗎?','很高興見到你','你還好嗎?','怎麼了?']
+    Greet_Respond_Msg = ['你好,很高興為你服務','吃飯了嗎?','嗨，最近如何?','最近失眠了 你呢?','還不錯，你呢?','很高興見到你','我很好，你呢?','早ㄤ!',]
+    Conversation_User_Msg = ['早上好，你好嗎?','我挺好的，你呢','我也還不錯','那很好','是啊','你好','你好','你好嗎?','我還不錯','那很好','是啊','有需要幫忙嗎?']
+    Conversation_Respond_Msg = []
+    
+    count = 0    
+    text = text = random.choice(Respond_Msg)
+    msg = TextSendMessage(text)
+    Respond_Msg.append(event_message)
+    #for Msg in User_Msg :
+    #   if event_message != Msg:
+    #        msg = TextSendMessage(event_message)
+    #        User_Msg.append(event_message)
+    #        Respond_Msg.append(event_message)
+    #        break
+    #    else :           
+    #        while count <= len(User_Msg):
+    #            if User_Msg[count] == event_message and count < len(User_Msg):               
+    #                count += 1
+    #                text = Respond_Msg[count]
+    #                msg = TextSendMessage(text)
+    #                break     
+    #           count += 1
+    #       break
+    
+   
+    return msg
+        
+    
+    
+#for Msg in User_Msg :
+ #       if event_message != Msg:
+  #          msg = TextSendMessage(event_message)
+   #         User_Msg.append(event_message)
+    #        Respond_Msg.append(event_message)
+     #   else :           
+      #      text = random.choice(Respond_Msg)
+       #     msg = TextSendMessage(text)
 
+    #if event_message == "嗨": 
+    #    text = random.choice ( ['嗨', '你好', '最近好嗎?', '你好嗎?', '很高興見到你'] )
+    #    msg = TextSendMessage(text)
+     
+    
+    #text = random.choice ( ['嗨', '你好', '最近好嗎?', '你好嗎?', '很高興見到你','你再問我嗎?','最近失眠了 你呢?'] )
+    #msg = TextSendMessage(text)
+    
+        
+    
 
-def movie():
-    target_url = 'https://movies.yahoo.com.tw/'
-    rs = requests.session()
-    res = rs.get(target_url, verify=False)
-    res.encoding = 'utf-8'
-    soup = BeautifulSoup(res.text, 'html.parser')   
-    content = ""
-    for index, data in enumerate(soup.select('div.movielist_info h1 a')):
-        if index == 20:
-            return content       
-        title = data.text
-        link =  data['href']
-        content += '{}\n{}\n'.format(title, link)
-    return content
 
 def CS():           
     message = TemplateSendMessage(
@@ -92,10 +119,10 @@ def CS():
                                 label='教學師資',
                                 text='教學師資'
                             ),
-                            MessageTemplateAction(
+                            URITemplateAction(
                                 label='研究所',
-                                text='研究所'
-                            ),
+                                uri='http://www.cs.nptu.edu.tw/files/11-1092-3154.php?Lang=zh-tw'
+                            )                            
                         ]
                     ),
                     CarouselColumn(
@@ -108,16 +135,17 @@ def CS():
                                 text='實驗室',
                                 data='action=buy&itemid=1'
                             ),
-                            MessageTemplateAction(
+                            URITemplateAction(
                                 label='大學部',
-                                text='大學部'
+                                uri='http://www.cs.nptu.edu.tw/files/11-1092-3164.php?Lang=zh-tw'
                             ),
-                            MessageTemplateAction(
+                            URITemplateAction(
                                 label='未來學生',
-                                text='未來學生'
+                                uri='http://www.cs.nptu.edu.tw/files/11-1092-3182.php?Lang=zh-tw'
                             ),
                         ]
                     ),
+                    
                 ]
             )
         )
@@ -140,16 +168,129 @@ def CSIntroduction():
                 label='發展特色',
                 text='發展特色'
             ),
-            MessageTemplateAction(
+            URITemplateAction(
                 label='未來發展',
-                text='未來發展'
-            )
+                uri='http://www.cs.nptu.edu.tw/files/11-1092-7952-1.php?Lang=zh-tw'
+            )            
         ]
     )
 )
     return message
-    
-    
+
+
+
+
+
+
+def teacher():
+    message = TemplateSendMessage(
+    alt_text='ImageCarousel template',
+    template=ImageCarouselTemplate(
+        columns=[
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='楊政興 主任',
+                    text='楊政興 主任',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='王朱福 教授',
+                    text='王朱福 教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='施釗德 教授',
+                    text='施釗德 教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='蔡進聰 教授',
+                    text='蔡進聰 教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='黃樹乾 副教授',
+                    text='黃樹乾 副教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='鄭經文 副教授',
+                    text='鄭經文 副教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item2.jpg',
+                action=PostbackTemplateAction(
+                    label='助理教授',
+                    text='助理教授',
+                    data='action=buy&itemid=2'
+                )
+            )
+        ]
+    )
+    )
+    return message
+
+
+
+def teacher2():
+    message = TemplateSendMessage(
+    alt_text='ImageCarousel template',
+    template=ImageCarouselTemplate(
+        columns=[
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='林志隆 助理教授',
+                    text='林志隆 助理教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='林彥廷 助理教授',
+                    text='林彥廷 助理教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item1.jpg',
+                action=PostbackTemplateAction(
+                    label='翁麒耀 助理教授',
+                    text='翁麒耀 助理教授',
+                    data='action=buy&itemid=1'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url='https://example.com/item2.jpg',
+                action=PostbackTemplateAction(
+                    label='黃奕欽 助理教授',
+                    text='黃奕欽 助理教授',
+                    data='action=buy&itemid=2'
+                )
+            )
+        ]
+    )
+    )
+    return message
 
 
 
@@ -164,6 +305,8 @@ def CSIntroduction():
 def handle_message(event):
     # 
     #line_bot_api.push_message('Ubc4902b9b76350b957769c5376e7f43c',TextSendMessage(text=''))
+    
+
     if event.message.text == "CS": 
         message=CS()
         line_bot_api.reply_message(event.reply_token, message)
@@ -171,38 +314,59 @@ def handle_message(event):
         message = CSIntroduction()
         line_bot_api.reply_message(event.reply_token, message)
     if event.message.text == "教學師資": 
-        message = TextSendMessage(text='True')
+        message = teacher()
         line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text == "研究所": 
-        message = TextSendMessage(text='True')
-        line_bot_api.reply_message(event.reply_token, message)
+    if event.message.text == "助理教授": 
+        message = teacher2()
+        line_bot_api.reply_message(event.reply_token, message)   
     if event.message.text == "實驗室": 
-        message = TextSendMessage(text='True')
-        line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text == "大學部": 
-        message = TextSendMessage(text='True')
-        line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text == "未來學生": 
-        message = TextSendMessage(text='True')
-        line_bot_api.reply_message(event.reply_token, message)
+        message = TemplateSendMessage(
+        alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='實驗室',
+                text='實驗室、教學及討論空間',
+                actions=[
+                    URITemplateAction(
+                        label='民生校區五育樓B1',
+                        uri='http://www.cs.nptu.edu.tw/files/11-1092-7948-1.php?Lang=zh-tw'
+                    ),
+                    URITemplateAction(
+                        label='民生校區教學科技館4樓',
+                        uri='http://www.cs.nptu.edu.tw/files/11-1092-7949-1.php?Lang=zh-tw'
+                    ),
+                    URITemplateAction(
+                        label='民生校區教學科技館5樓',
+                        uri='http://www.cs.nptu.edu.tw/files/11-1092-8005-1.php?Lang=zh-tw'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)    
 
 
     if event.message.text == "系所介紹": 
-        message = TextSendMessage(text='True')
+        message = TextSendMessage(text='在政府持續推動數位化台灣，以及資訊相關產業的蓬勃發展之下，在可預見的未來，資訊人才仍是就業市場的最大需求之一。屏東師院為發展成為綜合型大學，並考慮就業市場的需求，特成立本系，以培育資訊科技研發與應用人才。')
         line_bot_api.reply_message(event.reply_token, message)
     if event.message.text == "發展特色": 
-        message = TextSendMessage(text='True')
-        line_bot_api.reply_message(event.reply_token, message)
-    if event.message.text == "未來發展": 
-        message = TextSendMessage(text='True')
+        message = TextSendMessage(text='本系致力於智慧雲端系統與應用開發之研發工作。')       
+        line_bot_api.reply_message(event.reply_token, message)        
+       
+  
+    if event.message.text == "發票": 
+        message = TextSendMessage(text='https://www.etax.nat.gov.tw/etw-main/web/ETW183W1/')
         line_bot_api.reply_message(event.reply_token, message)
 
-    if event.message.text == "Dcard":
-        a=Dcard()
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=a))
+    if event.message.text == "天氣": 
+        message = TextSendMessage(text='https://www.cwb.gov.tw/V7/forecast/')
+        line_bot_api.reply_message(event.reply_token, message)
+    if event.message.text == "幣值": 
+        message = TextSendMessage(text='https://zt.coinmill.com/')
+        line_bot_api.reply_message(event.reply_token, message)
     
-    if event.message.text == '==':
-        message = TextSendMessage(text='fuck')
+    
+    if event.message.text == '你愛我嗎?':
+        message = TextSendMessage(text='我對你的感情，是人類和bot之間獨有的信任和友誼 你可以把它叫做愛。')
         line_bot_api.reply_message(event.reply_token,message)
     elif event.message.text =='location':
        message = LocationSendMessage(
@@ -213,7 +377,8 @@ def handle_message(event):
        )
        line_bot_api.reply_message(event.reply_token, message)
     else:
-        message = TextSendMessage(text=event.message.text)
+        message = chat(event.message.text)
+        #message = TextSendMessage(text=event.message.text)
         line_bot_api.reply_message(event.reply_token, message)
 
     
