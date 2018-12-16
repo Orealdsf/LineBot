@@ -22,9 +22,9 @@ import random
 app = Flask(__name__)
 
 # Channel Access Token
-line_bot_api = LineBotApi('ZD2oeQC2yTeiStCvFgLhCbeO4XrwALUYZkmvtpS+1qCzRt7jTwbo1qe7Y1e4z3IdCNMnVfZefN81QEjhJj9sHVbqD0CCQlfZVra3UVfr8ufPYsxwKe4ts+PC+k6SRKzMVFSzDPN+cmpxHuXErf+1FQdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi('')
 # Channel Secret
-handler = WebhookHandler('7b3daf73b5fe9358c1085d2cb8dd01d7')
+handler = WebhookHandler('5fe9358c1085d2cb8dd01d7')
 
 
 
