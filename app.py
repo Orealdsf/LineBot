@@ -77,7 +77,26 @@ def chat(event_message):
    
     return msg
         
+#def movie():
+      
+    #Respond_Msg = [
+    #'水行俠 Aquaman  http://www.aquamanmovie.net'
+    #,'蜘蛛人：新宇宙 Spider-Man: Into the Spider-Verse  https://www.facebook.com/sonypicturestw/'
+    #,'比悲傷更悲傷的故事 More than Blue  https://www.facebook.com/MoreThanBlueTW/'
+    #,'無敵破壞王2：網路大暴走 Ralph Breaks the Internet: Wreck-It Ralph 2  https://zh.wikipedia.org/wiki/無敵破壞王2：網路大暴走'
+    #,'移動城市：致命引擎 Mortal Engines  https://zh.wikipedia.org/wiki/移動城市：致命引擎'
+    #,'人面魚-紅衣小女孩外傳 the devil fish  https://www.facebook.com/tagalongmovie/'
+    #,'劇場版精靈寶可夢-我們的故事 pokemon the movie the power of us  https://www.facebook.com/mightymedia.com.tw'
+    #,'怪獸與葛林戴華德的罪行 fantastic beasts the crimes of grindelwald  https://zh.wikipedia.org/wiki/怪獸與葛林戴華德的罪行'
+    #,'寡婦 widows  https://zh.wikipedia.org/wiki/寡婦_(電影)']
+   
     
+    #count = 0    
+
+    #text = text = random.choice(Respond_Msg)
+    #msg_movie = TextSendMessage(text)
+    #return msg_movie
+       
     
 #for Msg in User_Msg :
  #       if event_message != Msg:
@@ -306,7 +325,9 @@ def handle_message(event):
     # 
     #line_bot_api.push_message('Ubc4902b9b76350b957769c5376e7f43c',TextSendMessage(text=''))
     
-
+    #if event.message.text == "電影": 
+    #    message=movie()
+    #   line_bot_api.reply_message(event.reply_token, message)
     if event.message.text == "CS": 
         message=CS()
         line_bot_api.reply_message(event.reply_token, message)
